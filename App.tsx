@@ -1,118 +1,102 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import { StatusBar, Dimensions, FlatList } from 'react-native';
+import styled from 'styled-components/native'
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const { width } = Dimensions.get('window');
 
-declare const global: {HermesInternal: null | {}};
+const initializeCells = () => {
+
+}
+
+const cellAmount = 7;
+const cellWidth = (width - 20 * (cellAmount - 1)) / 7
+const data = ["10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm"]
 
 const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change
-                this screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+      <Container>
+        <CellContainer>
+          <FlatList 
+            data={data}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <Row>
+                <LeftDate><Text>{item}</Text></LeftDate>
+                <Cell />
+                <Cell />
+                <Cell />
+                <Cell />
+                <Cell />
+                <RightDate><Text>{item}</Text></RightDate>
+                <Line />
+              </Row>
+            )}
+          />
+        </CellContainer>
+      </Container>
     </>
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+const Container = styled.View`
+  flex: 1;
+  align-items: center;
+  margin: 0 20px;
+  padding-top: 160px;
+`
+
+const CellContainer = styled.View`
+  width: 100%;
+`
+
+const Row = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
+const Line = styled.View`
+  width: 70%;
+  height: 2px;
+  background: #c4c4c4;
+  position: absolute;
+  top: ${cellWidth / 2 + 'px'};
+  left: 15%;
+`
+
+const Text = styled.Text`
+  font-size: 14px;
+`
+
+const Cell = styled.View`
+  width: ${cellWidth.toString() + 'px'};
+  height: ${cellWidth.toString() + 'px'};
+  /* border: 1px solid #000; */
+`
+
+const Date = styled.View`
+  width: ${cellWidth.toString() + 'px'};
+  height: ${cellWidth.toString() + 'px'};
+  background: white;
+  z-index: 99;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-style: solid;
+`
+
+const LeftDate = styled(Date)`
+  justify-content: flex-start;
+  border-right-width: 1px;
+  border-right-color: #c4c4c4;
+`
+
+const RightDate = styled(Date)`
+  justify-content: flex-end;
+  border-left-width: 1px;
+  border-left-color: #c4c4c4;
+`
 
 export default App;
